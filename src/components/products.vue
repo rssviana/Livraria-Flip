@@ -12,7 +12,7 @@
         <p class="card__description">{{ product.description }}</p>
         <p class="card__price">{{ formatPrice(product.price) }}</p>
         <div class="card__actions">
-          <router-link class="card__link"  @click="addingToCart(product.id)" :to="'/checkout/'+product.id">Comprar</router-link>
+          <router-link class="card__link" :to="'/checkout/'+ product.id">Comprar</router-link>
         </div>
       </div>
     </div>
@@ -30,9 +30,6 @@ export default {
     formatPrice: function (value) {
       let val = (value / 100).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-    },
-    addingToCart: function (productId) {
-      this.$store.state.showchosenProduct.push({idOfProduct: productId})
     }
   }
 }

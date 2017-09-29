@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    loadedProducts: [
+    products: [
       {
         id: 1,
         name: 'Maze Runner',
@@ -96,20 +96,25 @@ export const store = new Vuex.Store({
         author: 'George R. R. Martin',
         price: 3990
       }
-    ],
-    showchosenProduct: {
-      idOfProduct: 0
-    }
+    ]
   },
   mutations: {},
   actions: {},
   getters: {
-    // get all products
-    loadProducts: function (state) {
-      return state.loadedProducts
+    loadProducts: function (state) { // get all products
+      return state.products.sort((productA, productB) => {
+        return productA.price > productB.price
+      })
     },
-    loadChosenProduct: function (state) {
-      return state.showchosenProduct
+    loadProduct: function (state) { // get just  the product witch a past the id
+      return (productID) => {
+        return state.Products.find(function (product) {
+          return product.id === productID
+        })
+      }
+    },
+    featuredProduct: function (state, getters) { // use this function if we need just 8 product of the state
+      return getters.loadProducts.slice(0, 8)
     }
   }
 })

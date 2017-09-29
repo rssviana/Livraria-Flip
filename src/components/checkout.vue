@@ -1,5 +1,6 @@
 <template>
 <div class="wrapper">
+  <p>id do produto : {{ product.id }}</p>
   <table class="table">
     <tr class="table__tr">
       <th class="table__th">Produto</th>
@@ -12,14 +13,23 @@
         <img class="table__image"  v-bind:src="product.imageURL" alt="folder">
       </td>
       <td class="table__td">
-        <p>{{ chosenProduct.idOfProduct }}</p>
+        <select name="quantify" id="quantify">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
       </td>
       <td class="table__td">
         <p class="table__price">{{ formatPrice(product.price) }} a unidade</p>
       </td>
     </tr>  
     <tr>     
-      <td><p>Total acumulado: R$ 10000000000</p></td>
+      <td class="table__td">
+        Preço total: 
+        <p class="table__price">{{ formatPrice(totalprice(4, 3999)) }}</p>
+      </td>
       <td class="table__td"><button class="table__button" v-on:click="buy">Comprar</button></td>
     </tr>
   </table>
@@ -31,21 +41,22 @@ export default {
   name: 'CheckoutComponent',
   props: ['id'],
   computed: {
-    products: function () {
-      return this.$store.getters.loadProducts
-    },
-    chosenProduct: function () {
-      return this.$store.getters.loadChosenProduct
+    product: function () {
+      return this.$store.getters.loadProduct(this.$route.params.id)
     }
   },
   methods: {
-    buy: function () {
-      return alert('Compra de foi realizada com sucesso!')
-    },
     formatPrice: function (value) {
       let val = (value / 100).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    },
+    buy: function () {
+      return alert('Compra de foi realizada com sucesso!')
+    },
+    totalprice: function (multiplier, productPrice) {
+      return productPrice * multiplier
     }
+
   }
 }
 </script>
