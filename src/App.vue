@@ -1,13 +1,15 @@
 <template>
-<div class="world">
+<div class="container">
   <header class="header">
     <div class="header__logo">
-      <img class="header__image" src="./assets/logo-flip.png" alt="">
-      <h1 class="header__title">
-        <router-link to="/products">{{ title }}</router-link>
-      </h1>
+      <img class="header__image" src="./assets/images/logo-flip.png" alt="">
+      <hgroup>
+        <h1 class="header__title"><router-link to="/products">Livraria Flip</router-link></h1>
+        <h5 class="header__subtitle">Onde ler bons livros faz a diferença</h5>
+      </hgroup>
+      
     </div>   
-    <router-link to="/checkout">carrinho</router-link>
+    <router-link class="header__cart" to="/checkout">carrinho</router-link>
   </header>
   <router-view></router-view>
   <footer class="footer">
@@ -18,15 +20,7 @@
 
 <script>
 export default {
-  name: 'FlipComponent',
-
-  data () {
-    return {
-      title: 'Livraria-Flip'
-    }
-  },
-
-  methods: {}
+  name: 'FlipComponent'
 }
 </script>
 
@@ -53,10 +47,11 @@ a:hover{
   text-decoration: none;
 }
 
-.world{
+.container{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 100vh;
 }
 
 </style>
@@ -78,8 +73,10 @@ a:hover{
 }
 .header__image {
   height: 100px;
-  margin-right: 10px;
-
+  margin-right: 12px;
+}
+.header__title{
+  margin-bottom: 6px;
 }
 .header__title a {
   color: #fff;
@@ -90,11 +87,22 @@ a:hover{
   color: #fff;
   text-decoration: none;
 }
+.header__subtitle {
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: 500;
+}
 .header__item {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.header__cart {
+  content: url(./assets/images/logo-cart.png);
+  display: block;
+  text-align: center;
+  max-width: 50px;
 }
 .footer{
   align-items: center;

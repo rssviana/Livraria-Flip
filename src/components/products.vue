@@ -1,16 +1,18 @@
-<template>
+<template> 
   <div class="grid">
-    <div class="grid__card card" v-for="product in products" track-by="id">
+    <div class="grid__card card" v-for="product in products" :key="product.id">
       <div class="card__left">
         <img class="card__image"  v-bind:src="product.imageURL" alt="folder">
       </div>
       <div class="card__right">
-        <h2 class="card__title">{{product.name}}</h2>
-        <p class="card__subtitle">{{product.description}}</p>
-        <p class="card__price">{{product.price}}</p>
+        <hgroup>
+          <h3 class="card__head">{{product.name}}</h3>
+          <h4 class="card__subhead">{{ product.subtitle }}</h4>
+        </hgroup>
+        <p class="card__description">{{ product.description }}</p>
+        <p class="card__price">{{ formatPrice(product.price) }}</p>
         <div class="card__actions">
-          <router-link class="card__link" to="/checkout">Comprar</router-link>
-          <a class="card__link" href="http://sobresagas.com/resenha-maze-runner/" target="_blank">Resenha</a>
+          <router-link class="card__link"  @click="addingToCart(product.id)" :to="'/checkout/'+product.id">Comprar</router-link>
         </div>
       </div>
     </div>
@@ -19,81 +21,18 @@
 
 <script>
 export default {
-  name: 'ProductComponent',
-  data () {
-    return {
-      products: [
-        {
-          id: 1,
-          name: 'Maze Runner',
-          imageURL: 'http://culturaproximaleitura.com/wp-content/uploads/2015/01/Resenha-Maze-Runner-Prova-de-Fogo-James-Dashner-Livro-Capa.jpg',
-          description: 'A Prova de Fogo',
-          price: 'R$28,90'
-        },
-        {
-          id: 2,
-          name: 'Cronicas de Gelo e Fogo',
-          imageURL: 'http://www.vailendo.com.br/wp-content/uploads/2015/09/capa-guerra-dos-tronos.jpg',
-          description: 'Livro da Saga Game of thrones',
-          price: 'R$28,90'
-        },
-        {
-          id: 3,
-          name: 'Maze Runner',
-          imageURL: 'http://culturaproximaleitura.com/wp-content/uploads/2015/01/Resenha-Maze-Runner-Prova-de-Fogo-James-Dashner-Livro-Capa.jpg',
-          description: 'A Prova de Fogo',
-          price: 'R$28,90'
-        },
-        {
-          id: 4,
-          name: 'Cronicas de Gelo e Fogo',
-          imageURL: 'http://www.vailendo.com.br/wp-content/uploads/2015/09/capa-guerra-dos-tronos.jpg',
-          description: 'Livro da Saga Game of thrones',
-          price: 'R$28,90'
-        },
-        {
-          id: 5,
-          name: 'Maze Runner',
-          imageURL: 'http://culturaproximaleitura.com/wp-content/uploads/2015/01/Resenha-Maze-Runner-Prova-de-Fogo-James-Dashner-Livro-Capa.jpg',
-          description: 'A Prova de Fogo',
-          price: 'R$28,90'
-        },
-        {
-          id: 6,
-          name: 'Cronicas de Gelo e Fogo',
-          imageURL: 'http://www.vailendo.com.br/wp-content/uploads/2015/09/capa-guerra-dos-tronos.jpg',
-          description: 'Livro da Saga Game of thrones',
-          price: 'R$28,90'
-        },
-        {
-          id: 7,
-          name: 'Maze Runner',
-          imageURL: 'http://culturaproximaleitura.com/wp-content/uploads/2015/01/Resenha-Maze-Runner-Prova-de-Fogo-James-Dashner-Livro-Capa.jpg',
-          description: 'A Prova de Fogo',
-          price: 'R$28,90'
-        },
-        {
-          id: 8,
-          name: 'Cronicas de Gelo e Fogo',
-          imageURL: 'http://www.vailendo.com.br/wp-content/uploads/2015/09/capa-guerra-dos-tronos.jpg',
-          description: 'Livro da Saga Game of thrones',
-          price: 'R$28,90'
-        },
-        {
-          id: 9,
-          name: 'Maze Runner',
-          imageURL: 'http://culturaproximaleitura.com/wp-content/uploads/2015/01/Resenha-Maze-Runner-Prova-de-Fogo-James-Dashner-Livro-Capa.jpg',
-          description: 'A Prova de Fogo',
-          price: 'R$28,90'
-        },
-        {
-          id: 10,
-          name: 'Cronicas de Gelo e Fogo',
-          imageURL: 'http://www.vailendo.com.br/wp-content/uploads/2015/09/capa-guerra-dos-tronos.jpg',
-          description: 'Livro da Saga Game of thrones',
-          price: 'R$28,90'
-        }
-      ]
+  computed: {
+    products: function () {
+      return this.$store.getters.loadProducts
+    }
+  },
+  methods: {
+    formatPrice: function (value) {
+      let val = (value / 100).toFixed(2).replace('.', ',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    },
+    addingToCart: function (productId) {
+      this.$store.state.showchosenProduct.push({idOfProduct: productId})
     }
   }
 }
@@ -105,6 +44,8 @@ export default {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  padding: 50px 0 100px;
+  height: 100%;
 
 } 
 
@@ -132,9 +73,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 210px;
-  padding: 0 10px;
+  padding: 10px;
   text-align: center;
 }
 
@@ -142,16 +83,26 @@ export default {
   border-radius: 7px 0 0 7px;
   height: 100%;
 }
-.card__title{
+.card__head{
   font-family: 'Roboto', sans-serif;
   font-size: 1.4em;
-}
-.card__subtitle{
-  font-family: 'Roboto', sans-serif;
+  margin-bottom: 8px;
 
+}
+.card__description {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.8em;
+  max-height: 40px;
+  overflow: hidden;
 }
 .card__price{
   font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #7B1FA2;
+}
+.card__price::before {
+  content: 'R$ '
 }
 .card__link{
   color: #FF9800;
@@ -161,9 +112,8 @@ export default {
   font-family: 'roboto', sans-serif;
   font-size: 1em;
   padding: 6px 16px;
-  -webkit-transition: all .2s; 
+  margin-bottom: 10px;
   transition: all .2s;
-
 }
 .card__link:hover{
   color: #fff;
@@ -177,14 +127,4 @@ export default {
   .card__right { width: 100%; }
 }
 
-/*
-@media (min-width: 992px) {
-
-}
-
-
-@media (min-width: 1200px) {
-
-}
-*/
 </style>
