@@ -52,7 +52,7 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   display: flex;
   width: 350px;
-  margin: 40px 0;
+  margin: 40px 0 20px;
   transition: 0.3s;
 }  
 .card:hover {
@@ -118,10 +118,14 @@ export default {
   border: 1px solid #FF9800;
 }
 
-@media (max-width: 768px) {
-  .grid { padding: 0 5vw; }
-  .card { width: 100%;}
-  .card__right { width: 100%; }
+@media screen and (max-width: 720px) {
+  .grid { padding: 0 auto; }
+
+  .card { width: 95%;}
+  .card__right { 
+    width: 100%; 
+    min-width: 210px;
+  }
 }
 
 </style>

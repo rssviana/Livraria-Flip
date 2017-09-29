@@ -13,7 +13,8 @@
   </header>
   <router-view></router-view>
   <footer class="footer">
-    <p class="footer__text">Livraria Flip. Onde ler bons livros faz a diferença</p>
+    <h2 class="footer__title">Livraria Flip.</h2>
+    <p class="footer__text"> Onde ler bons livros faz a diferença</p>
   </footer>
 </div> 
 </template>
@@ -111,7 +112,37 @@ a:hover{
   background: -o-linear-gradient(top left, #7B1FA2, #FF9800);
   background: linear-gradient(to bottom right, #7B1FA2, #FF9800);
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 50px 5vw;
+}
+.footer__title, .footer__text {
+  color: #fff;
+}
+.footer__title {
+  font-size: 2em;
+  margin-bottom: 12px;
+}
+.footer__text {
+  font-size: 1.2em;
+}
+
+
+/* Breakpoints */
+@media screen and (max-width: 720px) {
+  .header__logo {
+    flex-direction: column;
+    margin: 0 auto;
+    transform: translateX(30px);
+    text-align: center;
+  }
+  .header__image{
+    margin-bottom: 25px;
+  }
+  .header__title {
+    margin-bottom: 12px;
+  }
+  .header__cart {
+    align-self: flex-start;
+  }
 }
 </style>
