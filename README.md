@@ -5,6 +5,10 @@
 
 <p>A book e-commerce project using Vue.js and Webpack</p>
 
+<h3>Requirements</h3>
+<a href="https://nodejs.org/en/" target="_blank">Node JS</a>
+<p>If you have not installed yet the Node js, please do that, then the project will run smoothly.</p>
+
 <h2> Build Setup </h2>
 
 ``` bash
