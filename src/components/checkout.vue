@@ -1,35 +1,37 @@
 <template>
 <div class="wrapper">
-  <p>id do produto : {{ product.id }}</p>
   <table class="table">
     <tr class="table__tr">
       <th class="table__th">Produto</th>
       <th class="table__th">Quantidade</th>
       <th class="table__th">Preço</th>
     </tr>
-    <tr class="table__tr" v-for="product in products">
+    <tr class="table__tr">
       <td class="table__td">
         <h4 class="table__name">{{ product.name }}</h4>
+        <p class="table__codeProduct">codigo do produto ({{ product.id }})</p>
         <img class="table__image"  v-bind:src="product.imageURL" alt="folder">
       </td>
       <td class="table__td">
-        <select name="quantify" id="quantify">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
+        <p class="table__text">Máximo de 5 unidades</p>
+        <select v-model="quantify">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
         </select>
       </td>
       <td class="table__td">
-        <p class="table__price">{{ formatPrice(product.price) }} a unidade</p>
+        <p class="table__price">{{ formatPrice(product.price) }}</p>
       </td>
     </tr>  
     <tr>     
       <td class="table__td">
-        Preço total: 
-        <p class="table__price">{{ formatPrice(totalprice(4, 3999)) }}</p>
+        Valor total: 
+        <p class="table__price">{{ formatPrice(totalprice(parseInt(quantify), product.price)) }}</p>
       </td>
+      <td></td>
       <td class="table__td"><button class="table__button" v-on:click="buy">Comprar</button></td>
     </tr>
   </table>
@@ -40,9 +42,15 @@
 export default {
   name: 'CheckoutComponent',
   props: ['id'],
+  data () {
+    return {
+      quantify: 1
+    }
+  },
   computed: {
     product: function () {
-      return this.$store.getters.loadProduct(this.$route.params.id)
+      const result = this.$store.getters.loadProduct(this.id)
+      return result
     }
   },
   methods: {
@@ -51,7 +59,11 @@ export default {
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
     },
     buy: function () {
-      return alert('Compra de foi realizada com sucesso!')
+      if (confirm('Deseja Realmente comprar este produto ? ') === true) {
+        alert('Compra do produto foi realizada com sucesso!')
+      } else {
+        alert('Procure outro livro interessante em nosso catalogo.')
+      }
     },
     totalprice: function (multiplier, productPrice) {
       return productPrice * multiplier
@@ -84,6 +96,7 @@ h1, h2, h3, h4, h5, p, a{
   font-weight: bold;
   text-align: left;
   padding: 15px;
+  text-align: center;
 }
 .table__tr:nth-child(even) {
   background-color: #dddddd;
@@ -93,5 +106,32 @@ h1, h2, h3, h4, h5, p, a{
 }
 .table__price::before {
   content: "R$ "
-}  
+} 
+.table__codeProduct{
+  font-size: 0.6em;
+  font-weight: 400;
+  margin-bottom: 24px;
+} 
+.table__button {
+    border: none;
+    color: white;
+    padding: 8px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.4em;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: #fff; 
+    color: #4CAF50; 
+    border: 2px solid #4CAF50;
+    outline: none;
+}
+
+.table__button:hover {
+    background-color: #4CAF50;
+    color: #fff;
+}
 </style>

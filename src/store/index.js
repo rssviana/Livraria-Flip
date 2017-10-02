@@ -102,15 +102,19 @@ export const store = new Vuex.Store({
   actions: {},
   getters: {
     loadProducts: function (state) { // get all products
+      return state.products
+    },
+    loadProductsLowPrice: function (state) { // gets all products with minor price first
       return state.products.sort((productA, productB) => {
         return productA.price > productB.price
       })
     },
-    loadProduct: function (state) { // get just  the product witch a past the id
+    loadProduct: function (state) {
       return (productID) => {
-        return state.Products.find(function (product) {
-          return product.id === productID
+        const result = state.products.filter((product) => {
+          return product.id === parseInt(productID)
         })
+        return result.length > 0 ? result[0] : {}
       }
     },
     featuredProduct: function (state, getters) { // use this function if we need just 8 product of the state
